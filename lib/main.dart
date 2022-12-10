@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:coffe/views/home_page.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
- class MyApp extends StatefulWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
@@ -14,6 +15,9 @@ void main() {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return  MaterialApp(debugShowCheckedModeBanner: false,
+      title: 'Coffee',
+      home: Home(),
+    );
   }
 }
