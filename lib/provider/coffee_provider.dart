@@ -1,8 +1,14 @@
-import 'package:http/http.dart' as http;
-import 'package:coffe/model/coffee.dart';
 import 'dart:convert';
 
-class CoffeeApi {
+import 'package:flutter/material.dart';
+
+import '../model/coffee.dart';
+import 'package:http/http.dart' as http;
+
+class CoffeeProvider with ChangeNotifier {
+  List<Coffee> _hotCoffes = [];
+  List<Coffee> _coldCoffes = [];
+
   static Future<String> CoffeeData(String type) async {
     http.Response response =
         await http.get(Uri.parse('https://api.sampleapis.com/coffee/$type'));
@@ -11,7 +17,7 @@ class CoffeeApi {
     return data;
   }
 
-  static Future<List<Coffee>> getDataHot() async {
+  Future<void> getDataHot() async {
     List<Coffee> coffeeList = [];
     var apiResponse = await CoffeeData('hot');
     var decode = jsonDecode(apiResponse);
@@ -34,10 +40,11 @@ class CoffeeApi {
       ));
       coffeeList.add(addNewItem);
     }
-    return coffeeList;
+    _hotCoffes = coffeeList;
+    notifyListeners();
   }
 
-  static Future<List<Coffee>> getDataCold() async {
+  Future<void> getDataCold() async {
     List<Coffee> coffeeList = [];
     var apiResponse = await CoffeeData('iced');
     var decode = jsonDecode(apiResponse);
@@ -60,6 +67,15 @@ class CoffeeApi {
       ));
       coffeeList.add(addNewItem);
     }
-    return coffeeList;
+    _coldCoffes = coffeeList;
+    notifyListeners();
+  }
+
+  List<Coffee> get hotCoffes {
+    return [..._hotCoffes];
+  }
+
+  List<Coffee> get coldCoffes {
+    return [..._coldCoffes];
   }
 }

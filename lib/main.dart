@@ -1,7 +1,12 @@
+import 'package:coffe/provider/coffee_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:coffe/views/home_page.dart';
 import 'package:coffe/provider/theme_provider.dart';
 import 'package:provider/provider.dart';
+
+import 'model/coffee.dart';
+
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 void main() {
   runApp(const MyApp());
@@ -21,13 +26,19 @@ class _MyAppState extends State<MyApp> {
         builder: (context, _) {
           final themeProvider = Provider.of<ThemeProvider>(context);
 
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Coffee',
-            themeMode: themeProvider.themeMode,
-            theme: MyThemes.lightTheme,
-            darkTheme: MyThemes.darkTheme,
-            home: Home(),
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider.value(value: Coffee()),
+              ChangeNotifierProvider.value(value: CoffeeProvider()),
+            ],
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Coffee',
+              themeMode: themeProvider.themeMode,
+              theme: MyThemes.lightTheme,
+              darkTheme: MyThemes.darkTheme,
+              home: Home(),
+            ),
           );
         },
       );

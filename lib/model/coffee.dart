@@ -1,16 +1,17 @@
-import 'package:coffe/widgets/fetch_data.dart';
+import 'package:flutter/material.dart';
 
-class Coffee {
-  final String title;
-  final String description;
-  final List<String> ingredients;
-  final String image;
-  final int id;
+class Coffee with ChangeNotifier {
+  final String? title;
+  final String? description;
+  final List<String>? ingredients;
+  final String? image;
+  final int? id;
 
-  Coffee(
-      {required this.title,
-      required this.description,
-      required this.ingredients,
-      required this.image,
-      required this.id});
+  Coffee({
+    this.title,
+    this.description,
+    this.ingredients,
+    this.image,
+    this.id,
+  });
 }

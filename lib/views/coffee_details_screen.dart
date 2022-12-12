@@ -19,7 +19,7 @@ class CoffeeDetails extends StatelessWidget {
           children: [
             Container(
               child: Image(
-                image: NetworkImage(item.image),
+                image: NetworkImage(item.image!),
               ),
             ),
             Container(
@@ -32,7 +32,7 @@ class CoffeeDetails extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(15),
               child: Text(
-                item.description,
+                item.description!,
                 style: TextStyle(fontSize: 17),
               ),
             ),
@@ -49,7 +49,7 @@ class CoffeeDetails extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  for (var ing in item.ingredients)
+                  for (var ing in item.ingredients!)
                     Text(
                       '* $ing',
                       style: TextStyle(fontSize: 17),
