@@ -11,9 +11,35 @@ class CoffeeApi {
     return data;
   }
 
-  static Future<List<Coffee>> getData() async {
+  static Future<List<Coffee>> getDataHot() async {
     List<Coffee> coffeeList = [];
     var apiResponse = await CoffeeData('hot');
+    var decode = jsonDecode(apiResponse);
+    for (var item in decode as List<dynamic>) {
+      var title = item["title"];
+      var description = item["description"];
+      var image = item["image"];
+      var id = item["id"];
+      List<String> ingredientList = [];
+      for (var ingredient in item['ingredients']) {
+        ingredientList.add(ingredient);
+      }
+
+      var addNewItem = (Coffee(
+        title: title,
+        description: description,
+        image: image,
+        ingredients: ingredientList,
+        id: id,
+      ));
+      coffeeList.add(addNewItem);
+    }
+    return coffeeList;
+  }
+
+  static Future<List<Coffee>> getDataCold() async {
+    List<Coffee> coffeeList = [];
+    var apiResponse = await CoffeeData('iced');
     var decode = jsonDecode(apiResponse);
     for (var item in decode as List<dynamic>) {
       var title = item["title"];

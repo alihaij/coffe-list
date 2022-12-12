@@ -14,6 +14,8 @@ class CoffeeDetails extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               child: Image(
@@ -21,17 +23,38 @@ class CoffeeDetails extends StatelessWidget {
               ),
             ),
             Container(
-              child: Text('Description: '),
+              padding: EdgeInsets.only(left: 10, top: 15),
+              child: const Text(
+                'Description: ',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
+              ),
             ),
             Container(
-              child: Text(item.description),
+              padding: EdgeInsets.all(15),
+              child: Text(
+                item.description,
+                style: TextStyle(fontSize: 17),
+              ),
             ),
             Container(
-              child: Text('Ingedients: '),
+              padding: EdgeInsets.only(left: 10, top: 15),
+              child: Text(
+                'Ingedients: ',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
+              ),
             ),
             Container(
+              padding:
+                  EdgeInsets.only(bottom: 25, top: 15, right: 15, left: 15),
               child: Column(
-                children: [for (var ing in item.ingredients) Text(ing)],
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (var ing in item.ingredients)
+                    Text(
+                      '* $ing',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                ],
               ),
             ),
           ],
