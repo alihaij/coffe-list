@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:coffe/views/coffee_details_screen.dart';
 
 class CoffeeCard extends StatelessWidget {
   final String title;
@@ -20,7 +19,7 @@ class CoffeeCard extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.6),
-            offset: Offset(
+            offset: const Offset(
               0.0,
               10.0,
             ),
@@ -40,11 +39,12 @@ class CoffeeCard extends StatelessWidget {
       child: Stack(
         children: [
           Align(
+            alignment: Alignment.center,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5.0),
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
               child: Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white70,
                   fontSize: 25,
                 ),
@@ -53,13 +53,12 @@ class CoffeeCard extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            alignment: Alignment.center,
           ),
           Align(
+            alignment: Alignment.bottomLeft,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
-            alignment: Alignment.bottomLeft,
           ),
         ],
       ),

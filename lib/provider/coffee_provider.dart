@@ -9,7 +9,7 @@ class CoffeeProvider with ChangeNotifier {
   List<Coffee> _hotCoffes = [];
   List<Coffee> _coldCoffes = [];
 
-  static Future<String> CoffeeData(String type) async {
+  static Future<String> coffeeData(String type) async {
     http.Response response =
         await http.get(Uri.parse('https://api.sampleapis.com/coffee/$type'));
     String data = response.body;
@@ -19,7 +19,7 @@ class CoffeeProvider with ChangeNotifier {
 
   Future<void> getDataHot() async {
     List<Coffee> coffeeList = [];
-    var apiResponse = await CoffeeData('hot');
+    var apiResponse = await coffeeData('hot');
     var decode = jsonDecode(apiResponse);
     for (var item in decode as List<dynamic>) {
       var title = item["title"];
@@ -46,7 +46,7 @@ class CoffeeProvider with ChangeNotifier {
 
   Future<void> getDataCold() async {
     List<Coffee> coffeeList = [];
-    var apiResponse = await CoffeeData('iced');
+    var apiResponse = await coffeeData('iced');
     var decode = jsonDecode(apiResponse);
     for (var item in decode as List<dynamic>) {
       var title = item["title"];

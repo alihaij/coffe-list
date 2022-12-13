@@ -47,10 +47,7 @@ class _HomeState extends State<Home> with RouteAware {
     routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
   }
 
-  @override
-  void didPush() {
-    super.didPush();
-  }
+
 
   @override
   void initState() {
@@ -90,7 +87,7 @@ class _HomeState extends State<Home> with RouteAware {
             Text('Coffee'),
           ],
         ),
-        actions: [ChangeThemeButtonWidget()],
+        actions: const [ChangeThemeButtonWidget()],
       ),
       body: _isLoading
           ? const SpinKitThreeBounce(

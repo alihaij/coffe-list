@@ -15,14 +15,16 @@ class MyThemes {
   static final darkTheme = ThemeData(
     scaffoldBackgroundColor: Colors.grey.shade900,
     primaryColor: Colors.black,
-    colorScheme: ColorScheme.dark(),
-    iconTheme: IconThemeData(color: Colors.purple.shade200, opacity: 0.8),
+    colorScheme: const ColorScheme.dark(),
+    iconTheme:
+       const IconThemeData(color: Color.fromARGB(255, 49, 183, 165), opacity: 0.8),
   );
 
   static final lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
     primaryColor: Colors.white,
-    colorScheme: ColorScheme.light(),
-    iconTheme: IconThemeData(color: Colors.red, opacity: 0.8),
+    colorScheme: const ColorScheme.light(),
+    iconTheme: const IconThemeData(
+        color: Color.fromARGB(255, 103, 49, 228), opacity: 0.8),
   );
 }
