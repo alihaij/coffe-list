@@ -6,8 +6,8 @@ import '../model/coffee.dart';
 import 'package:http/http.dart' as http;
 
 class CoffeeProvider with ChangeNotifier {
-  List<Coffee> _hotCoffes = [];
-  List<Coffee> _coldCoffes = [];
+  List<Coffee> _hotCoffee = [];
+  List<Coffee> _coldCoffee = [];
 
   static Future<String> coffeeData(String type) async {
     http.Response response =
@@ -40,7 +40,7 @@ class CoffeeProvider with ChangeNotifier {
       ));
       coffeeList.add(addNewItem);
     }
-    _hotCoffes = coffeeList;
+    _hotCoffee = coffeeList;
     notifyListeners();
   }
 
@@ -67,15 +67,15 @@ class CoffeeProvider with ChangeNotifier {
       ));
       coffeeList.add(addNewItem);
     }
-    _coldCoffes = coffeeList;
+    _coldCoffee = coffeeList;
     notifyListeners();
   }
 
   List<Coffee> get hotCoffes {
-    return [..._hotCoffes];
+    return [..._hotCoffee];
   }
 
   List<Coffee> get coldCoffes {
-    return [..._coldCoffes];
+    return [..._coldCoffee];
   }
 }
