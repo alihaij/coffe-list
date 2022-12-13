@@ -7,8 +7,9 @@ import 'package:coffe/widgets/coffee_card.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
-
 import '../provider/coffee_provider.dart';
+
+enum CoffeeType { iced, hot }
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -20,13 +21,13 @@ class _HomeState extends State<Home> with RouteAware {
   List<Coffee> _hotCoffeeList = [];
   List<Coffee> _icedCoffeeList = [];
   List<Coffee> _coffeeList = [];
-  String _currentPage = 'Hot Coffee';
+  var _currentPage = CoffeeType.hot;
 
   Future<void> refresh(context) async {
     setState(() {
       _isLoading = true;
     });
-    if (_currentPage == 'Hot Coffee') {
+    if (_currentPage == CoffeeType.hot) {
       await Provider.of<CoffeeProvider>(context, listen: false).getDataHot();
       _coffeeList =
           Provider.of<CoffeeProvider>(context, listen: false).hotCoffes;
@@ -46,8 +47,6 @@ class _HomeState extends State<Home> with RouteAware {
     super.didChangeDependencies();
     routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
   }
-
-
 
   @override
   void initState() {
@@ -122,7 +121,7 @@ class _HomeState extends State<Home> with RouteAware {
           gap: 8,
           onPressed: () async {
             setState(() {
-              _currentPage = 'Hot Coffee';
+              _currentPage = CoffeeType.hot;
               _coffeeList = _hotCoffeeList;
             });
           },
@@ -132,7 +131,7 @@ class _HomeState extends State<Home> with RouteAware {
           text: 'Iced Coffee',
           onPressed: () {
             setState(() {
-              _currentPage = 'Iced Coffee';
+              _currentPage = CoffeeType.iced;
               _coffeeList = _icedCoffeeList;
             });
           },

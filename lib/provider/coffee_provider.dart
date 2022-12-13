@@ -6,8 +6,8 @@ import '../model/coffee.dart';
 import 'package:http/http.dart' as http;
 
 class CoffeeProvider with ChangeNotifier {
-  List<Coffee> _hotCoffee = [];
-  List<Coffee> _coldCoffee = [];
+  List<Coffee> _hotCoffes = [];
+  List<Coffee> _coldCoffes = [];
 
   static Future<String> coffeeData(String type) async {
     http.Response response =
@@ -15,6 +15,52 @@ class CoffeeProvider with ChangeNotifier {
     String data = response.body;
 
     return data;
+  }
+
+  Future<void> getData(Enum type) async {
+    List<Coffee> coffeeList = [];
+    var apiResponse = await coffeeData(type.toString());
+    var Map = jsonDecode(apiResponse) as List;
+    Map.forEach((item) {
+      var title = item["title"];
+      var description = item["description"];
+      var image = item["image"];
+      var id = item["id"];
+      List<String> ingredientList = [];
+      var ingredient = item['ingredients'] as dynamic;
+      // addIngresient(ingredient);
+    });
+
+    List<String> addIngresient(List<String> ingredient) {
+      List<String> ingList = [];
+      ingredient.forEach((item) {
+        ingList.add(item);
+      });
+
+      return ingList;
+    }
+
+    for (var item in Map as List<dynamic>) {
+      var title = item["title"];
+      var description = item["description"];
+      var image = item["image"];
+      var id = item["id"];
+      List<String> ingredientList = [];
+      for (var ingredient in item['ingredients']) {
+        ingredientList.add(ingredient);
+      }
+
+      var addNewItem = (Coffee(
+        title: title,
+        description: description,
+        image: image,
+        ingredients: ingredientList,
+        id: id,
+      ));
+      coffeeList.add(addNewItem);
+    }
+    _hotCoffes = coffeeList;
+    notifyListeners();
   }
 
   Future<void> getDataHot() async {
@@ -40,7 +86,7 @@ class CoffeeProvider with ChangeNotifier {
       ));
       coffeeList.add(addNewItem);
     }
-    _hotCoffee = coffeeList;
+    _hotCoffes = coffeeList;
     notifyListeners();
   }
 
@@ -67,15 +113,15 @@ class CoffeeProvider with ChangeNotifier {
       ));
       coffeeList.add(addNewItem);
     }
-    _coldCoffee = coffeeList;
+    _coldCoffes = coffeeList;
     notifyListeners();
   }
 
   List<Coffee> get hotCoffes {
-    return [..._hotCoffee];
+    return [..._hotCoffes];
   }
 
   List<Coffee> get coldCoffes {
-    return [..._coldCoffee];
+    return [..._coldCoffes];
   }
 }
