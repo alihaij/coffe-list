@@ -7,9 +7,10 @@ import 'package:coffe/widgets/coffee_card.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
+
 import '../provider/coffee_provider.dart';
 
-enum CoffeeType { iced, hot }
+enum CoffeeType { hot, iced }
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,57 +19,74 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with RouteAware {
-  List<Coffee> _hotCoffeeList = [];
-  List<Coffee> _icedCoffeeList = [];
+  // List<Coffee> _hotCoffeeList = [];
+  // List<Coffee> _icedCoffeeList = [];
   List<Coffee> _coffeeList = [];
-  var _currentPage = CoffeeType.hot;
+  var coffeeType = CoffeeType.hot;
+  // String _currentPage = 'Hot Coffee';
 
   Future<void> refresh(context) async {
-    setState(() {
-      _isLoading = true;
-    });
-    if (_currentPage == CoffeeType.hot) {
-      await Provider.of<CoffeeProvider>(context, listen: false).getDataHot();
-      _coffeeList =
-          Provider.of<CoffeeProvider>(context, listen: false).hotCoffes;
-    } else {
-      await Provider.of<CoffeeProvider>(context, listen: false).getDataCold();
-      _coffeeList =
-          Provider.of<CoffeeProvider>(context, listen: false).coldCoffes;
-    }
-    setState(() {
-      _isLoading = false;
-    });
+    fetchData();
+    // print(coffeeType.name);
+    // setState(() {
+    //   _isLoading = true;
+    // });
+    // if (_currentPage == 'Hot Coffee') {
+    //   await Provider.of<CoffeeProvider>(context, listen: false).getDataHot();
+    //   _coffeeList =
+    //       Provider.of<CoffeeProvider>(context, listen: false).hotCoffes;
+    // } else {
+    //   await Provider.of<CoffeeProvider>(context, listen: false).getDataCold();
+    //   _coffeeList =
+    //       Provider.of<CoffeeProvider>(context, listen: false).coldCoffes;
+    // }
+    // setState(() {
+    //   _isLoading = false;
+    // });
   }
 
   bool _isLoading = false;
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+  // }
 
   @override
   void initState() {
     super.initState();
+    fetchData();
+    // setState(() {
+    //   _isLoading = true;
+    // });
+    // Provider.of<CoffeeProvider>(context, listen: false)
+    //     .getDataHot()
+    //     .then((value) {
+    //   Provider.of<CoffeeProvider>(context, listen: false)
+    //       .getDataCold()
+    //       .then((value) {
+    //     _hotCoffeeList =
+    //         Provider.of<CoffeeProvider>(context, listen: false).hotCoffes;
+    //     _icedCoffeeList =
+    //         Provider.of<CoffeeProvider>(context, listen: false).coldCoffes;
+    //     _coffeeList = _hotCoffeeList;
+    //     setState(() {
+    //       _isLoading = false;
+    //     });
+    //   });
+    // });
+  }
+
+  fetchData() async {
     setState(() {
       _isLoading = true;
     });
-    Provider.of<CoffeeProvider>(context, listen: false)
-        .getDataHot()
-        .then((value) {
-      Provider.of<CoffeeProvider>(context, listen: false)
-          .getDataCold()
-          .then((value) {
-        _hotCoffeeList =
-            Provider.of<CoffeeProvider>(context, listen: false).hotCoffes;
-        _icedCoffeeList =
-            Provider.of<CoffeeProvider>(context, listen: false).coldCoffes;
-        _coffeeList = _hotCoffeeList;
-        setState(() {
-          _isLoading = false;
-        });
-      });
+    final provider = Provider.of<CoffeeProvider>(context, listen: false);
+    await provider.getData(coffeeType).then((value) {
+      _coffeeList = provider.coffeeList;
+    });
+    setState(() {
+      _isLoading = false;
     });
   }
 
@@ -116,24 +134,29 @@ class _HomeState extends State<Home> with RouteAware {
             ),
       bottomNavigationBar: GNav(tabs: [
         GButton(
-          icon: Icons.coffee,
+          icon: Icons.local_fire_department_sharp,
           text: 'Hot Coffee',
           gap: 8,
-          onPressed: () async {
+          onPressed: () {
             setState(() {
-              _currentPage = CoffeeType.hot;
-              _coffeeList = _hotCoffeeList;
+              // _currentPage = 'Hot Coffee';
+              // _coffeeList = _hotCoffeeList;
+              coffeeType = CoffeeType.hot;
             });
+            fetchData();
           },
         ),
         GButton(
-          icon: Icons.coffee_outlined,
+          icon: Icons.ac_unit_rounded,
           text: 'Iced Coffee',
+          gap: 8,
           onPressed: () {
             setState(() {
-              _currentPage = CoffeeType.iced;
-              _coffeeList = _icedCoffeeList;
+              // _currentPage = 'Iced Coffee';
+              // _coffeeList = _icedCoffeeList;
+              coffeeType = CoffeeType.iced;
             });
+            fetchData();
           },
         )
       ]),

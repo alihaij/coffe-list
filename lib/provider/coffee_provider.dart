@@ -4,124 +4,108 @@ import 'package:flutter/material.dart';
 
 import '../model/coffee.dart';
 import 'package:http/http.dart' as http;
+import '../views/home_page.dart';
 
 class CoffeeProvider with ChangeNotifier {
-  List<Coffee> _hotCoffes = [];
-  List<Coffee> _coldCoffes = [];
+  // List<Coffee> _hotCoffee = [];
+  // List<Coffee> _coldCoffee = [];
+  List<Coffee> _coffeeList = [];
 
   static Future<String> coffeeData(String type) async {
-    http.Response response =
-        await http.get(Uri.parse('https://api.sampleapis.com/coffee/$type'));
-    String data = response.body;
-
-    return data;
+    try {
+      http.Response response =
+          await http.get(Uri.parse('https://api.sampleapis.com/coffee/$type'));
+      String data = response.body;
+      return data;
+    } on Exception catch (e) {
+      print(e);
+      return (e.toString());
+    }
   }
 
-  Future<void> getData(Enum type) async {
-    List<Coffee> coffeeList = [];
-    var apiResponse = await coffeeData(type.toString());
-    var Map = jsonDecode(apiResponse) as List;
-    Map.forEach((item) {
-      var title = item["title"];
-      var description = item["description"];
-      var image = item["image"];
-      var id = item["id"];
-      List<String> ingredientList = [];
-      var ingredient = item['ingredients'] as dynamic;
-      // addIngresient(ingredient);
-    });
-
-    List<String> addIngresient(List<String> ingredient) {
-      List<String> ingList = [];
-      ingredient.forEach((item) {
-        ingList.add(item);
+  Future<void> getData(CoffeeType coffeeType) async {
+    _coffeeList.clear();
+    try {
+      var apiResponse = await coffeeData(coffeeType.name);
+      var decode = jsonDecode(apiResponse);
+      (decode as List<dynamic>).forEach((item) {
+        _coffeeList.add(Coffee(
+          title: item['title'],
+          description: item['description'],
+          image: item['image'],
+          ingredients: List<String>.from(item['ingredients']),
+          id: item['id'],
+        ));
       });
-
-      return ingList;
+      notifyListeners();
+    } on Exception catch (e) {
+      print(e);
     }
-
-    for (var item in Map as List<dynamic>) {
-      var title = item["title"];
-      var description = item["description"];
-      var image = item["image"];
-      var id = item["id"];
-      List<String> ingredientList = [];
-      for (var ingredient in item['ingredients']) {
-        ingredientList.add(ingredient);
-      }
-
-      var addNewItem = (Coffee(
-        title: title,
-        description: description,
-        image: image,
-        ingredients: ingredientList,
-        id: id,
-      ));
-      coffeeList.add(addNewItem);
-    }
-    _hotCoffes = coffeeList;
-    notifyListeners();
   }
 
-  Future<void> getDataHot() async {
-    List<Coffee> coffeeList = [];
-    var apiResponse = await coffeeData('hot');
-    var decode = jsonDecode(apiResponse);
-    for (var item in decode as List<dynamic>) {
-      var title = item["title"];
-      var description = item["description"];
-      var image = item["image"];
-      var id = item["id"];
-      List<String> ingredientList = [];
-      for (var ingredient in item['ingredients']) {
-        ingredientList.add(ingredient);
-      }
+  // Future<void> getDataHot() async {
+  //   List<Coffee> coffeeList = [];
+  //   var apiResponse = await coffeeData('hot');
+  //   var decode = jsonDecode(apiResponse);
+  //   for (var item in decode as List<dynamic>) {
+  //     var title = item["title"];
+  //     var description = item["description"];
+  //     var image = item["image"];
+  //     var id = item["id"];
+  //     List<String> ingredientList = [];
+  //     for (var ingredient in item['ingredients']) {
+  //       ingredientList.add(ingredient);
+  //     }
 
-      var addNewItem = (Coffee(
-        title: title,
-        description: description,
-        image: image,
-        ingredients: ingredientList,
-        id: id,
-      ));
-      coffeeList.add(addNewItem);
-    }
-    _hotCoffes = coffeeList;
-    notifyListeners();
+  //     var addNewItem = (Coffee(
+  //       title: title,
+  //       description: description,
+  //       image: image,
+  //       ingredients: ingredientList,
+  //       id: id,
+  //     ));
+  //     coffeeList.add(addNewItem);
+  //   }
+  //   _hotCoffee = coffeeList;
+  //   notifyListeners();
+  // }
+
+  // Future<void> getDataCold() async {
+  //   List<Coffee> coffeeList = [];
+  //   var apiResponse = await coffeeData('iced');
+  //   var decode = jsonDecode(apiResponse);
+  //   for (var item in decode as List<dynamic>) {
+  //     var title = item["title"];
+  //     var description = item["description"];
+  //     var image = item["image"];
+  //     var id = item["id"];
+  //     List<String> ingredientList = [];
+  //     for (var ingredient in item['ingredients']) {
+  //       ingredientList.add(ingredient);
+  //     }
+
+  //     var addNewItem = (Coffee(
+  //       title: title,
+  //       description: description,
+  //       image: image,
+  //       ingredients: ingredientList,
+  //       id: id,
+  //     ));
+  //     coffeeList.add(addNewItem);
+  //   }
+  //   _coldCoffee = coffeeList;
+  //   notifyListeners();
+  // }
+
+  List<Coffee> get coffeeList {
+    return [..._coffeeList];
   }
 
-  Future<void> getDataCold() async {
-    List<Coffee> coffeeList = [];
-    var apiResponse = await coffeeData('iced');
-    var decode = jsonDecode(apiResponse);
-    for (var item in decode as List<dynamic>) {
-      var title = item["title"];
-      var description = item["description"];
-      var image = item["image"];
-      var id = item["id"];
-      List<String> ingredientList = [];
-      for (var ingredient in item['ingredients']) {
-        ingredientList.add(ingredient);
-      }
+//   List<Coffee> get hotCoffes {
+//     return [..._hotCoffee];
+//   }
 
-      var addNewItem = (Coffee(
-        title: title,
-        description: description,
-        image: image,
-        ingredients: ingredientList,
-        id: id,
-      ));
-      coffeeList.add(addNewItem);
-    }
-    _coldCoffes = coffeeList;
-    notifyListeners();
-  }
-
-  List<Coffee> get hotCoffes {
-    return [..._hotCoffes];
-  }
-
-  List<Coffee> get coldCoffes {
-    return [..._coldCoffes];
-  }
+//   List<Coffee> get coldCoffes {
+//     return [..._coldCoffee];
+//   }
 }
